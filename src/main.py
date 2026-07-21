@@ -1,4 +1,5 @@
 from data.load import load_data
+from analysis.statistics import production_statistics
 from processing.clean import clean_data
 from analysis.production import (
     oil_production_by_state,
@@ -17,3 +18,10 @@ print()
 print(oil_production_by_field(df))
 print()
 print(oil_production_by_month(df))
+
+print("\n=== INDICADORES GERAIS ===")
+
+stats = production_statistics(df)
+
+for indicador, valor in stats.items():
+    print(f"{indicador}: {valor}")
