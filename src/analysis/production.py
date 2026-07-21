@@ -19,6 +19,23 @@ def oil_production_by(df: pd.DataFrame, group_by: str, top_n: int | None = None)
 
     return production
 
+def oil_production_by_month(df: pd.DataFrame) -> pd.DataFrame:
+    production = (
+        df.groupby("Mês/Ano")["Produção de Óleo (m³)"]
+        .sum()
+        .reset_index()
+        .sort_values("Mês/Ano")
+    )
+
+    production["Variação (%)"] = (
+        production["Produção de Óleo (m³)"]
+        .pct_change() * 100
+    )
+
+    production["Variação (%)"] = production["Variação (%)"].round(2)
+
+    return production
+
 def oil_production_by_state(df):
     return oil_production_by(df, "Estado")
 
