@@ -2,6 +2,7 @@ from data.load import load_data
 from analysis.statistics import production_statistics
 from utils.logger import get_logger
 from processing.clean import clean_data
+from analysis.kpis import production_kpis
 from visualization.plots import (
     plot_monthly_oil_production,
     plot_oil_by_state,
@@ -47,7 +48,7 @@ print(monthly)
 
 logger.info("=== INDICADORES GERAIS ===")
 
-stats = production_statistics(df)
+stats = production_kpis(df)
 
 plot_monthly_oil_production(monthly).show()
 
