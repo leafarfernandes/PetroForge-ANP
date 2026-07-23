@@ -37,23 +37,23 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric(
         "Produção Total",
-        f"{kpis['Produção total (m³)']:,.0f} m³"
+        f"{kpis['oil_total_m3']:,.0f} m³",
     )
 
 with col2:
     st.metric(
         "Poços",
-        kpis["Poços"]
+        kpis["wells"],
     )
 
 with col3:
     st.metric(
         "Campos",
-        kpis["Campos"]
+        kpis["fields"],
     )
 
 with col4:
     st.metric(
         "Estados",
-        kpis["Estados produtores"]
+        kpis["producing_states"],
     )

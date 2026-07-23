@@ -45,9 +45,6 @@ def plot_oil_by_state(states_df):
 
     return fig
 
-import plotly.express as px
-
-
 def plot_oil_by_field(field_df):
     """
     Top campos produtores de óleo.
