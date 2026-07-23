@@ -1,5 +1,5 @@
 from data.load import load_data
-from analysis.statistics import production_statistics
+#from analysis.statistics import production_statistics
 from utils.logger import get_logger
 from processing.clean import clean_data
 from analysis.kpis import production_kpis

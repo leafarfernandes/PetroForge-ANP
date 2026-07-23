@@ -1,5 +1,13 @@
 import streamlit as st
 
+from src.data.load import load_data
+from src.processing.clean import clean_data
+from src.analysis.kpis import production_kpis
+
+# ==========================
+# Configuração da página
+# ==========================
+
 st.set_page_config(
     page_title="PetroForge",
     page_icon="🛢️",
@@ -7,12 +15,45 @@ st.set_page_config(
 )
 
 st.title("🛢️ PetroForge")
+st.subheader("Dashboard da Produção Brasileira de Petróleo (ANP)")
 
-st.write(
-    """
-    Dashboard de Produção de Petróleo da ANP.
+st.divider()
 
-    Projeto desenvolvido utilizando Python, Pandas,
-    Plotly e Streamlit.
-    """
-)
+# ==========================
+# Carregamento dos dados
+# ==========================
+
+df = load_data()
+df = clean_data(df)
+
+kpis = production_kpis(df)
+
+# ==========================
+# KPIs
+# ==========================
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric(
+        "Produção Total",
+        f"{kpis['Produção total (m³)']:,.0f} m³"
+    )
+
+with col2:
+    st.metric(
+        "Poços",
+        kpis["Poços"]
+    )
+
+with col3:
+    st.metric(
+        "Campos",
+        kpis["Campos"]
+    )
+
+with col4:
+    st.metric(
+        "Estados",
+        kpis["Estados produtores"]
+    )
