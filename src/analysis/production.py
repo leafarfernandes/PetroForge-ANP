@@ -51,6 +51,89 @@ def oil_production_by_month(df: pd.DataFrame) -> pd.DataFrame:
 
     return production
 
+def oil_production_by_well(df, top_n=15):
+    """
+    Retorna os poços com maior produção de óleo.
+    """
+
+    production = (
+        df.groupby("Poço", dropna=False)["Produção de Óleo (m³)"]
+        .sum(min_count=1)
+        .sort_values(ascending=False)
+    )
+
+    total = production.sum()
+
+    production = production.reset_index()
+
+    production["Participação (%)"] = (
+        production["Produção de Óleo (m³)"] / total * 100
+    )
+
+    return production.head(top_n)
+
+def oil_gas_by_month(df):
+    """
+    Produção mensal de óleo e gás.
+    """
+
+    production = (
+        df.groupby("Mês/Ano")[
+            [
+                "Produção de Óleo (m³)",
+                "Produção de Gás Associado (Mm³)",
+                "Produção de Gás Não Associado (Mm³)"
+            ]
+        ]
+        .sum(min_count=1)
+        .reset_index()
+        .sort_values("Mês/Ano")
+    )
+
+    production["Produção Total de Gás (Mm³)"] = (
+        production["Produção de Gás Associado (Mm³)"].fillna(0)
+        + production["Produção de Gás Não Associado (Mm³)"].fillna(0)
+    )
+
+    return production
+
+def oil_heatmap_state_month(df):
+    """
+    Produção de óleo por Estado e Mês.
+    """
+
+    heatmap = (
+        df.groupby(
+            ["Estado", "Mês/Ano"],
+            dropna=False
+        )["Produção de Óleo (m³)"]
+        .sum(min_count=1)
+        .reset_index()
+    )
+
+    heatmap = heatmap.pivot(
+        index="Estado",
+        columns="Mês/Ano",
+        values="Produção de Óleo (m³)"
+    )
+
+    return heatmap
+
+def oil_production_treemap(df):
+
+    treemap = (
+        df.groupby(
+            ["Estado", "Campo"],
+            dropna=False
+        )["Produção de Óleo (m³)"]
+        .sum(min_count=1)
+        .reset_index()
+    )
+
+    treemap = treemap.dropna(subset=["Estado", "Campo"])
+
+    return treemap
+
 def oil_production_by_state(df):
     return oil_production_by(df, "Estado")
 
